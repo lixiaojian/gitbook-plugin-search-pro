@@ -56,9 +56,10 @@ module.exports = {
         // Write index to disk
         'finish': function() {
             if (this.output.name != 'website') return;
-
-            this.log.debug.ln('write search index');
-            return this.output.writeFile('search_plus_index.json', JSON.stringify(documentsStore));
+            //这里可以自定义搜索文件的名称
+            var fileCategory =  this.config.get('pluginsConfig')['search-lixj']['fileCategoey'] || 'plus';
+            var fileName = 'search_'+ fileCategory +'_index.json';
+            return this.output.writeFile(fileName, JSON.stringify(documentsStore));
         }
     }
 };

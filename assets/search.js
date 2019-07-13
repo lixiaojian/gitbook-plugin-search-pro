@@ -2,6 +2,7 @@ require([
     'gitbook',
     'jquery'
 ], function(gitbook, $) {
+    var configs;
     var MAX_DESCRIPTION_SIZE = 500;
     var state = gitbook.state;
     var INDEX_DATA = {};
@@ -14,7 +15,7 @@ require([
     var $searchTitle;
     var $searchResultsCount;
     var $searchQuery;
-
+    
     // Throttle search
     function throttle(fn, wait) {
         var timeout;
@@ -167,8 +168,11 @@ require([
     }
 
     gitbook.events.on('start', function() {
+        configs = gitbook.state.config;
         bindSearch();
-        $.getJSON(state.basePath + "/search_plus_index.json").then(function(data) {
+        var fileCategory = configs.pluginsConfig['search-lixj']['fileCategoey'] || 'plus';
+        var fileName = '/search_' + fileCategory + '_index.json';
+        $.getJSON(state.basePath + fileName).then(function(data) {
             INDEX_DATA = data;
             showResult();
             closeSearch();
